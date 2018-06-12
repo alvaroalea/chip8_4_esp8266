@@ -1,0 +1,20 @@
+
+IF !DEFINED_ANSIstdio
+	defc	DEFINED_ANSIstdio = 1
+ENDIF
+
+
+IF !DEFINED_NEED1bitsound 
+	defc	DEFINED_NEED1bitsound  = 1
+ENDIF
+
+
+IF !NEED_floatpack
+	DEFINE	NEED_floatpack
+ENDIF
+
+
+IF !DEFINED_complexstdio
+	defc	DEFINED_complexstdio = 1
+ENDIF
+

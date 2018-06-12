@@ -1,0 +1,3301 @@
+;* * * * *  Small-C/Plus z88dk * * * * *
+;  Version: v02-11-2002.02
+;
+;	Reconstructed for the z80 Module Assembler
+;
+;	Module compile time: Sat Jan 15 13:30:15 2005
+
+
+
+	MODULE	chip8.c
+
+	INCLUDE "#z80_crt0.hdr"
+
+
+._key
+	defm	"X123QWEASDZC4RFVM"
+
+
+._updatedisplay
+	push	bc
+	push	bc
+	push	bc
+	dec	sp
+	ld	hl,13	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,11-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	dec	hl
+	ld	de,31	;const
+	ex	de,hl
+	call	l_and
+	ex	de,hl
+	ld	hl,17-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_ult
+	jp	nc,i_4
+	ld	hl,15	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	hl,11	;const
+	add	hl,sp
+	ld	(hl),#(64 % 256 % 256)
+.i_4
+	ld	hl,13	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,11-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	dec	hl
+	ld	de,31	;const
+	ex	de,hl
+	call	l_and
+	ex	de,hl
+	ld	hl,15-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_ult
+	jp	nc,i_5
+	ld	hl,13	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	hl,9	;const
+	add	hl,sp
+	ld	(hl),#(32 % 256 % 256)
+.i_5
+	ld	hl,15	;const
+	add	hl,sp
+	push	hl
+	ld	a,(hl)
+	and	#(254 % 256)
+	pop	de
+	ld	(de),a
+	ld	hl,2	;const
+	add	hl,sp
+	push	hl
+	ld	hl,15	;const
+	add	hl,sp
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	l,a
+	ld	h,0
+	jp	i_8
+.i_6
+	ld	hl,3	;const
+	add	hl,sp
+	push	hl
+	ld	hl,17	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,2	;const
+	call	l_div_u
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	ld	de,64
+	call	l_mult
+	ex	de,hl
+	ld	hl,17-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	bc
+	push	hl
+	jp	i_11
+.i_9
+	ld	hl,_display
+	push	hl
+	pop	de
+	pop	hl
+	inc	hl
+	push	hl
+	push	de
+	dec	hl
+	pop	de
+	add	hl,de
+	ld	a,(hl)
+	and	a
+	jp	z,i_12
+	ld	hl,4	;const
+	add	hl,sp
+	ld	(hl),#(240 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_13
+.i_12
+	ld	hl,4	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+.i_13
+	ld	hl,_display
+	ex	de,hl
+	pop	hl
+	push	hl
+	add	hl,de
+	ld	a,(hl)
+	and	a
+	jp	z,i_14
+	ld	hl,4	;const
+	add	hl,sp
+	ld	a,(hl)
+	or	#(15 % 256)
+	ld	(hl),a
+.i_14
+	ld	hl,5	;const
+	add	hl,sp
+	push	hl
+	dec	hl
+	dec	hl
+	ld	l,(hl)
+	ld	h,0
+	ld	de,16384
+	add	hl,de
+	push	hl
+	ld	hl,6	;const
+	add	hl,sp
+	ld	a,(hl)
+	and	#(16 % 256)
+	ld	e,a
+	ld	d,0
+	ld	l,#(7 % 256)
+	call	l_asl
+	pop	de
+	add	hl,de
+	push	hl
+	ld	hl,6	;const
+	add	hl,sp
+	ld	a,(hl)
+	and	#(1 % 256)
+	ld	e,a
+	ld	d,0
+	ld	l,#(10 % 256)
+	call	l_asl
+	pop	de
+	add	hl,de
+	push	hl
+	ld	hl,6	;const
+	add	hl,sp
+	ld	a,(hl)
+	and	#(14 % 256)
+	ld	e,a
+	ld	d,0
+	ld	l,#(4 % 256)
+	call	l_asl
+	pop	de
+	add	hl,de
+	call	l_pint_pop
+	ld	hl,5	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	a,(hl)
+	ld	(de),a
+	ld	hl,5	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	ld	bc,256
+	add	hl,bc
+	call	l_pint_pop
+	ld	hl,5	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	a,(hl)
+	ld	(de),a
+	ld	hl,5	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	ld	bc,256
+	add	hl,bc
+	call	l_pint_pop
+	ld	hl,5	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	a,(hl)
+	ld	(de),a
+	ld	hl,5	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	ld	bc,256
+	add	hl,bc
+	call	l_pint_pop
+	ld	hl,5	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	a,(hl)
+	ld	(de),a
+	ld	hl,3	;const
+	add	hl,sp
+	inc	(hl)
+	pop	hl
+	inc	hl
+	push	hl
+	dec	hl
+.i_11
+	pop	hl
+	push	hl
+	push	hl
+	ld	hl,4	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	ld	de,64
+	call	l_mult
+	ex	de,hl
+	ld	hl,19-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ex	de,hl
+	ld	hl,15-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	de
+	call	l_lt
+	jp	c,i_9
+.i_10
+	ld	hl,2	;const
+	add	hl,sp
+	inc	(hl)
+	ld	l,(hl)
+	ld	h,0
+	dec	l
+.i_8
+	ld	hl,2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	hl,15	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,13-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	de
+	call	l_ult
+	jp	c,i_6
+.i_7
+	inc	sp
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._updatedisplay2
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	ld	hl,16	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,14-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	dec	hl
+	ld	de,63	;const
+	ex	de,hl
+	call	l_and
+	pop	de
+	pop	bc
+	push	hl
+	push	de
+	ex	de,hl
+	ld	hl,18-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_lt
+	jp	nc,i_15
+	ld	hl,16	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	hl,12	;const
+	add	hl,sp
+	ld	(hl),#(64 % 256 % 256)
+.i_15
+	ld	hl,14	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,12-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	dec	hl
+	ld	de,31	;const
+	ex	de,hl
+	call	l_and
+	pop	bc
+	push	hl
+	ex	de,hl
+	ld	hl,16-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_lt
+	jp	nc,i_16
+	ld	hl,14	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	hl,10	;const
+	add	hl,sp
+	ld	(hl),#(32 % 256 % 256)
+.i_16
+	ld	hl,4	;const
+	add	hl,sp
+	ex	de,hl
+	ld	hl,16-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_pint
+	jp	i_19
+.i_17
+	ld	hl,6	;const
+	add	hl,sp
+	ex	de,hl
+	ld	hl,18-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_pint
+	jp	i_22
+.i_20
+	ld	hl,_display
+	push	hl
+	ld	hl,6	;const
+	add	hl,sp
+	call	l_gint	;
+	ld	de,64
+	call	l_mult
+	ex	de,hl
+	ld	hl,10-2	;const
+	add	hl,sp
+	call	l_gint	;
+	add	hl,de
+	pop	de
+	add	hl,de
+	ld	a,(hl)
+	cp	#(1 % 256)
+	jp	nz,i_23
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	push	de
+	ld	hl,6	;const
+	add	hl,sp
+	call	l_gint	;
+	push	hl
+	call	plot
+	pop	bc
+	pop	bc
+	jp	i_24
+.i_23
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	push	de
+	ld	hl,6	;const
+	add	hl,sp
+	call	l_gint	;
+	push	hl
+	call	unplot
+	pop	bc
+	pop	bc
+.i_24
+	ld	hl,6	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	inc	hl
+	call	l_pint_pop
+	dec	hl
+.i_22
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	push	de
+	ld	hl,18	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,16-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	de
+	call	l_lt
+	jp	c,i_20
+.i_21
+	ld	hl,4	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	inc	hl
+	call	l_pint_pop
+	dec	hl
+.i_19
+	ld	hl,4	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	push	de
+	ld	hl,16	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,14-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	de
+	call	l_lt
+	jp	c,i_17
+.i_18
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._mygetk2
+ld a,1
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_25
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_25
+ld a,2
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_26
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,32	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_26
+ld a,4
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_27
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,64	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_27
+ld a,8
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_28
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,96	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_28
+ld a,16
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_29
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,128	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_29
+ld a,32
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_30
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,160	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_30
+ld a,64
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_31
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,192	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_31
+ld a,128
+cpl
+in a,(254)
+cpl
+and 31
+ld (_r),a
+	ld	a,(_r)
+	and	a
+	jp	z,i_32
+	ld	a,(_r)
+	ld	e,a
+	ld	d,0
+	ld	hl,224	;const
+	call	l_or
+	ld	h,0
+	ld	a,l
+	ld	(_r),a
+	ld	hl,(_r)
+	ld	h,0
+	ret
+
+
+.i_32
+	ld	hl,0 % 256	;const
+	ret
+
+
+
+._mygetk
+	call	_mygetk2
+.i_35
+	ld	a,l
+	cp	#(0% 256)
+	jp	z,i_36
+	cp	#(97% 256)
+	jp	z,i_37
+	cp	#(98% 256)
+	jp	z,i_38
+	cp	#(100% 256)
+	jp	z,i_39
+	cp	#(104% 256)
+	jp	z,i_40
+	cp	#(112% 256)
+	jp	z,i_41
+	cp	#(144% 256)
+	jp	z,i_42
+	cp	#(136% 256)
+	jp	z,i_43
+	cp	#(132% 256)
+	jp	z,i_44
+	cp	#(130% 256)
+	jp	z,i_45
+	cp	#(129% 256)
+	jp	z,i_46
+	cp	#(65% 256)
+	jp	z,i_47
+	cp	#(66% 256)
+	jp	z,i_48
+	cp	#(68% 256)
+	jp	z,i_49
+	cp	#(72% 256)
+	jp	z,i_50
+	cp	#(162% 256)
+	jp	z,i_51
+	cp	#(161% 256)
+	jp	z,i_52
+	cp	#(33% 256)
+	jp	z,i_53
+	cp	#(34% 256)
+	jp	z,i_54
+	cp	#(36% 256)
+	jp	z,i_55
+	cp	#(40% 256)
+	jp	z,i_56
+	cp	#(194% 256)
+	jp	z,i_57
+	cp	#(2% 256)
+	jp	z,i_58
+	cp	#(4% 256)
+	jp	z,i_59
+	cp	#(8% 256)
+	jp	z,i_60
+	cp	#(16% 256)
+	jp	z,i_61
+	cp	#(240% 256)
+	jp	z,i_62
+	cp	#(228% 256)
+	jp	z,i_63
+	jp	i_64
+.i_36
+	ld	hl,0 % 256	;const
+	ret
+
+
+.i_37
+	ld	hl,49 % 256	;const
+	ret
+
+
+.i_38
+	ld	hl,50 % 256	;const
+	ret
+
+
+.i_39
+	ld	hl,51 % 256	;const
+	ret
+
+
+.i_40
+	ld	hl,52 % 256	;const
+	ret
+
+
+.i_41
+	ld	hl,53 % 256	;const
+	ret
+
+
+.i_42
+	ld	hl,54 % 256	;const
+	ret
+
+
+.i_43
+	ld	hl,55 % 256	;const
+	ret
+
+
+.i_44
+	ld	hl,56 % 256	;const
+	ret
+
+
+.i_45
+	ld	hl,57 % 256	;const
+	ret
+
+
+.i_46
+	ld	hl,48 % 256	;const
+	ret
+
+
+.i_47
+	ld	hl,81 % 256	;const
+	ret
+
+
+.i_48
+	ld	hl,87 % 256	;const
+	ret
+
+
+.i_49
+	ld	hl,69 % 256	;const
+	ret
+
+
+.i_50
+	ld	hl,82 % 256	;const
+	ret
+
+
+.i_51
+	ld	hl,79 % 256	;const
+	ret
+
+
+.i_52
+	ld	hl,80 % 256	;const
+	ret
+
+
+.i_53
+	ld	hl,65 % 256	;const
+	ret
+
+
+.i_54
+	ld	hl,83 % 256	;const
+	ret
+
+
+.i_55
+	ld	hl,68 % 256	;const
+	ret
+
+
+.i_56
+	ld	hl,70 % 256	;const
+	ret
+
+
+.i_57
+	ld	hl,76 % 256	;const
+	ret
+
+
+.i_58
+	ld	hl,90 % 256	;const
+	ret
+
+
+.i_59
+	ld	hl,88 % 256	;const
+	ret
+
+
+.i_60
+	ld	hl,67 % 256	;const
+	ret
+
+
+.i_61
+	ld	hl,86 % 256	;const
+	ret
+
+
+.i_62
+	ld	hl,66 % 256	;const
+	ret
+
+
+.i_63
+	ld	hl,77 % 256	;const
+	ret
+
+
+.i_64
+	ld	hl,32 % 256	;const
+	ret
+
+
+.i_34
+	ret
+
+
+
+._mygetkey
+	dec	sp
+.i_65
+	ld	hl,0	;const
+	add	hl,sp
+	push	hl
+	call	_mygetk
+	pop	de
+	ld	a,l
+	ld	(de),a
+	and	a
+	jp	z,i_65
+.i_66
+	ld	hl,0	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	inc	sp
+	ret
+
+
+
+._iskeypressed
+	call	_mygetk
+	push	hl
+	ld	de,_key
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_eq
+	jp	nc,i_67
+	ld	hl,1 % 256	;const
+	ret
+
+
+.i_67
+	ld	hl,0 % 256	;const
+	ret
+
+
+.i_68
+	ret
+
+
+
+._waitanykey
+	dec	sp
+	ld	hl,100	;const
+	ld	a,l
+	call	l_sxt
+	dec	sp
+	ld	a,l
+	pop	hl
+	ld	l,a
+	push	hl
+.i_69
+	ld	hl,0	;const
+	add	hl,sp
+	ld	a,(hl)
+	cp	#(100 % 256)
+	jp	nz,i_70
+	ld	hl,1	;const
+	add	hl,sp
+	push	hl
+	call	_mygetkey
+	pop	de
+	ld	a,l
+	ld	(de),a
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_71
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_72
+.i_71
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+1)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_73
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(1 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_74
+.i_73
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+1+1)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_75
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(2 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_76
+.i_75
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+1+1+1)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_77
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(3 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_78
+.i_77
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+4)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_79
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(4 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_80
+.i_79
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+5)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_81
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(5 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_82
+.i_81
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+6)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_83
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(6 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_84
+.i_83
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+7)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_85
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(7 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_86
+.i_85
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+8)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_87
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(8 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_88
+.i_87
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+9)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_89
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(9 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_90
+.i_89
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+10)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_91
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(10 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_92
+.i_91
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+11)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_93
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(11 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_94
+.i_93
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+12)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_95
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(12 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_96
+.i_95
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+13)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_97
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(13 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_98
+.i_97
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+14)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_99
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(14 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_100
+.i_99
+	pop	hl
+	push	hl
+	ld	h,0
+	ex	de,hl
+	ld	hl,(_key+13)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_101
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(15 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+.i_101
+.i_100
+.i_98
+.i_96
+.i_94
+.i_92
+.i_90
+.i_88
+.i_86
+.i_84
+.i_82
+.i_80
+.i_78
+.i_76
+.i_74
+.i_72
+	jp	i_69
+.i_70
+	ld	hl,0	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	pop	bc
+	ret
+
+
+
+._menu
+	ld	hl,0	;const
+	ld	a,l
+	call	l_sxt
+	dec	sp
+	ld	a,l
+	pop	hl
+	ld	l,a
+	push	hl
+	dec	sp
+.i_102
+	ld	hl,1	;const
+	add	hl,sp
+	ld	a,(hl)
+	and	a
+	jp	nz,i_103
+	ld	hl,i_1+0
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	ld	hl,i_1+85
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	ld	hl,i_1+107
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	ld	hl,i_1+136
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	ld	hl,i_1+165
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	ld	hl,i_1+207
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	ld	hl,i_1+242
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	call	fgetc_cons
+.i_106
+	call	l_case
+	defw	i_107,49
+	defw	i_108,50
+	defw	i_109,48
+	defw	0
+	jp	i_105
+.i_107
+	call	_loadrom
+	call	_reset
+	jp	i_105
+.i_108
+	call	_reset
+	ld	hl,1	;const
+	add	hl,sp
+	ld	(hl),#(1 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_105
+	call	_redefineteclas
+.i_109
+	ld	hl,1	;const
+	add	hl,sp
+	ld	(hl),#(1 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+.i_105
+	jp	i_102
+.i_103
+	ld	hl,1 % 256	;const
+	pop	bc
+	ret
+
+
+
+._loadrom
+	jp	i_110
+._st_loadrom_font
+	defm	""&240&""&144&""&144&""&144&""&240&" `  p"&240&""&16&""&240&""&128&""&240&""&240&""&16&""&240&""&16&""&240&""&144&""&144&""&240&""&16&""&16&""&240&""&128&""&240&""&16&""&240&""
+	defm	""&240&""&128&""&240&""&144&""&240&""&240&""&16&" @@"&240&""&144&""&240&""&144&""&240&""&240&""&144&""&240&""&16&""&240&""&240&""&144&""&240&""&144&""&144&""&224&""&144&""&224&""&144&""&224&""
+	defm	""&240&""&128&""&128&""&128&""&240&""&224&""&144&""&144&""&144&""&224&""&240&""&128&""&240&""&128&""&240&""&240&""&128&""&240&""&128&""&128&""
+
+.i_110
+	ld	hl,0	;const
+	push	hl
+	jp	i_114
+.i_112
+	ld	hl,_mem
+	pop	de
+	push	de
+	push	hl
+	ex	de,hl
+	ld	de,56
+	add	hl,de
+	pop	de
+	add	hl,de
+	push	hl
+	ld	de,_st_loadrom_font
+	ld	hl,4-2	;const
+	add	hl,sp
+	call	l_gint	;
+	add	hl,de
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	pop	hl
+	inc	hl
+	push	hl
+	dec	hl
+.i_114
+	pop	hl
+	push	hl
+	ld	de,80	;const
+	ex	de,hl
+	call	l_lt
+	jp	c,i_112
+.i_113
+	ld	hl,i_1+283
+	push	hl
+	ld	a,1
+	call	printf
+	pop	bc
+	call	_mygetkey
+	ld	hl,_mem+512
+	push	hl
+	ld	hl,17	;const
+	push	hl
+	ld	hl,255 % 256	;const
+	push	hl
+	call	tape_load_block
+	pop	bc
+	pop	bc
+	pop	bc
+	ld	hl,_mem+512
+	push	hl
+	ld	a,(_mem+524)
+	ld	e,a
+	ld	d,0
+	ld	l,#(8 % 256)
+	call	l_asl
+	ex	de,hl
+	ld	hl,(_mem+523)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	hl,0 % 256	;const
+	push	hl
+	call	tape_load_block
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._pita
+	ld	hl,400	;const
+	push	hl
+	ld	hl,10	;const
+	push	hl
+	call	bit_beep
+	pop	bc
+	pop	bc
+	ret
+
+
+;ivoid border(u8_t n)
+;{
+;n++;
+;}
+
+._border
+	ld	hl,2	;const
+	add	hl,sp
+	inc	(hl)
+	ld	l,(hl)
+	ld	h,0
+	dec	l
+	ret
+
+
+
+._initsystem
+	push	bc
+	ld	hl,0	;const
+	push	hl
+	jp	i_117
+.i_115
+	pop	hl
+	push	hl
+	ld	de,22528
+	add	hl,de
+	pop	de
+	pop	bc
+	push	hl
+	push	de
+	ld	(hl),#(7 % 256 % 256)
+	pop	hl
+	inc	hl
+	push	hl
+	dec	hl
+.i_117
+	pop	hl
+	push	hl
+	ld	de,768	;const
+	ex	de,hl
+	call	l_lt
+	jp	c,i_115
+.i_116
+	ld	hl,0 % 256	;const
+	push	hl
+	call	_border
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._printstate
+	ret
+
+
+
+._redefineteclas
+	ret
+
+
+
+._cls
+	ld	hl,0	;const
+	push	hl
+	jp	i_120
+.i_118
+	ld	hl,_display
+	ex	de,hl
+	pop	hl
+	push	hl
+	add	hl,de
+	ld	(hl),#(0 % 256 % 256)
+	pop	hl
+	inc	hl
+	push	hl
+	dec	hl
+.i_120
+	pop	hl
+	push	hl
+	ld	de,2048	;const
+	ex	de,hl
+	call	l_lt
+	jp	c,i_118
+.i_119
+	ld	hl,0 % 256	;const
+	push	hl
+	push	hl
+	ld	hl,64 % 256	;const
+	push	hl
+	ld	hl,32 % 256	;const
+	push	hl
+	call	_updatedisplay
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._drawsprite
+	ld	hl,0	;const
+	ld	a,l
+	call	l_sxt
+	dec	sp
+	ld	a,l
+	pop	hl
+	ld	l,a
+	push	hl
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	ld	hl,7	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_123
+.i_121
+	ld	hl,5	;const
+	add	hl,sp
+	push	hl
+	ld	hl,_mem
+	push	hl
+	ld	de,(_i)
+	ld	hl,13-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	de
+	add	hl,de
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	hl,6	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_126
+.i_124
+	ld	hl,13	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,9-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	de,32	;const
+	ex	de,hl
+	call	l_div_u
+	ex	de,hl
+	ld	de,64
+	call	l_mult
+	push	hl
+	ld	hl,17	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,10-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	de,64	;const
+	ex	de,hl
+	call	l_div_u
+	ex	de,hl
+	pop	de
+	add	hl,de
+	pop	bc
+	push	hl
+	ld	hl,4	;const
+	add	hl,sp
+	push	hl
+	ld	de,_display
+	ld	hl,4-2	;const
+	add	hl,sp
+	call	l_gint	;
+	add	hl,de
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	hl,3	;const
+	add	hl,sp
+	push	hl
+	ld	hl,7	;const
+	add	hl,sp
+	ld	a,(hl)
+	and	#(128 % 256)
+	ld	e,a
+	ld	d,0
+	ld	l,#(7 % 256)
+	call	l_asr_u
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,5	;const
+	add	hl,sp
+	push	hl
+	ld	hl,7	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	l,#(1 % 256)
+	call	l_asl
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,2	;const
+	add	hl,sp
+	push	hl
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_xor
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,4	;const
+	add	hl,sp
+	ld	a,(hl)
+	cp	#(1 % 256)
+	jp	nz,i_128
+	ld	hl,2	;const
+	add	hl,sp
+	ld	a,(hl)
+	cp	#(0 % 256)
+	jr	z,i_129_i_128
+.i_128
+	jp	i_127
+.i_129_i_128
+	ld	hl,8	;const
+	add	hl,sp
+	ld	(hl),#(1 % 256 % 256)
+.i_127
+	ld	hl,_display
+	ex	de,hl
+	pop	hl
+	push	hl
+	add	hl,de
+	push	hl
+	ld	hl,4	;const
+	add	hl,sp
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	hl,6	;const
+	add	hl,sp
+	inc	(hl)
+	ld	l,(hl)
+	ld	h,0
+	dec	l
+.i_126
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,8	;const
+	call	l_ult
+	jp	c,i_124
+.i_125
+	ld	hl,7	;const
+	add	hl,sp
+	inc	(hl)
+	ld	l,(hl)
+	ld	h,0
+	dec	l
+.i_123
+	ld	hl,7	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,13-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_ult
+	jp	c,i_121
+.i_122
+	ld	hl,15	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	hl,15	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	hl,8 % 256	;const
+	push	hl
+	ld	hl,17	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	call	_updatedisplay
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ld	hl,8	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	inc	sp
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._reset
+	call	_cls
+	ld	hl,512	;const
+	ld	(_pc),hl
+	ld	hl,0 % 256	;const
+	ld	a,l
+	ld	(_sp),a
+	ret
+
+
+
+._main
+	push	bc
+	push	bc
+	push	bc
+	call	_initsystem
+.i_130
+	call	_menu
+	call	clg
+	ld	hl,0 % 256	;const
+	push	hl
+	push	hl
+	ld	hl,64 % 256	;const
+	push	hl
+	ld	hl,32 % 256	;const
+	push	hl
+	call	_updatedisplay
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ld	hl,1	;const
+	pop	bc
+	push	hl
+.i_132
+	pop	hl
+	push	hl
+	ld	a,h
+	or	l
+	jp	z,i_133
+	ld	hl,4	;const
+	add	hl,sp
+	ld	de,0	;const
+	ex	de,hl
+	call	l_pint
+	jp	i_136
+.i_134
+	call	_do_cpu
+	ld	a,h
+	or	l
+	jp	z,i_137
+	ld	hl,1	;const
+	pop	bc
+	push	hl
+.i_137
+	ld	hl,(_stimer)
+	ld	h,0
+	ld	a,h
+	or	l
+	call	nz,_pita
+.i_138
+	call	_mygetk
+	ld	de,77	;const
+	call	l_eq
+	jp	nc,i_139
+	ld	hl,0	;const
+	pop	bc
+	push	hl
+.i_139
+	ld	hl,4	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	inc	hl
+	call	l_pint_pop
+	dec	hl
+.i_136
+	ld	hl,4	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,5	;const
+	call	l_lt
+	jp	c,i_134
+.i_135
+	ld	a,(_dtimer)
+	and	a
+	jp	z,i_140
+	ld	hl,_dtimer
+	dec	(hl)
+	ld	l,(hl)
+	ld	h,0
+	inc	hl
+.i_140
+	ld	a,(_stimer)
+	and	a
+	jp	z,i_141
+	ld	hl,_stimer
+	dec	(hl)
+	ld	l,(hl)
+	ld	h,0
+	inc	hl
+.i_141
+	jp	i_132
+.i_133
+	jp	i_130
+.i_131
+	ld	hl,0	;const
+	pop	bc
+	pop	bc
+	pop	bc
+	ret
+
+
+
+._debug
+	ld	hl,65517	;const
+	add	hl,sp
+	ld	sp,hl
+	call	clg
+	ld	hl,0 % 256	;const
+	push	hl
+	push	hl
+	ld	hl,64 % 256	;const
+	push	hl
+	ld	hl,32 % 256	;const
+	push	hl
+	call	_updatedisplay2
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	bc
+	ld	hl,1	;const
+	add	hl,sp
+	ld	(hl),#(1 % 256 % 256)
+.i_142
+	ld	hl,1	;const
+	add	hl,sp
+	ld	a,(hl)
+	and	a
+	jp	z,i_143
+	ld	hl,0	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+	ld	l,(hl)
+	ld	h,0
+	jp	i_146
+.i_144
+	call	_do_cpu
+	ld	a,h
+	or	l
+	jp	z,i_147
+	ld	hl,1	;const
+	add	hl,sp
+	ld	(hl),#(1 % 256 % 256)
+.i_147
+	ld	hl,(_stimer)
+	ld	h,0
+	ld	a,h
+	or	l
+	call	nz,_pita
+.i_148
+	call	_printstate
+	call	_mygetkey
+	ld	de,77	;const
+	call	l_eq
+	jp	nc,i_149
+	ld	hl,1	;const
+	add	hl,sp
+	ld	(hl),#(0 % 256 % 256)
+.i_149
+	ld	hl,0	;const
+	add	hl,sp
+	inc	(hl)
+	ld	l,(hl)
+	ld	h,0
+	dec	l
+.i_146
+	ld	hl,0	;const
+	add	hl,sp
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,5	;const
+	call	l_ult
+	jp	c,i_144
+.i_145
+	ld	a,(_dtimer)
+	and	a
+	jp	z,i_150
+	ld	hl,_dtimer
+	dec	(hl)
+	ld	l,(hl)
+	ld	h,0
+	inc	hl
+.i_150
+	ld	a,(_stimer)
+	and	a
+	jp	z,i_151
+	ld	hl,_stimer
+	dec	(hl)
+	ld	l,(hl)
+	ld	h,0
+	inc	hl
+.i_151
+	jp	i_142
+.i_143
+	ld	hl,19	;const
+	add	hl,sp
+	ld	sp,hl
+	ret
+
+
+
+._do_cpu
+	jp	i_152
+._st_do_cpu_debug
+	defw	0
+
+.i_152
+	ld	hl,65524	;const
+	add	hl,sp
+	ld	sp,hl
+	ld	hl,10	;const
+	add	hl,sp
+	push	hl
+	ld	hl,_mem
+	push	hl
+	ld	hl,(_pc)
+	inc	hl
+	ld	(_pc),hl
+	dec	hl
+	pop	de
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	l,#(8 % 256)
+	call	l_asl
+	push	hl
+	ld	hl,_mem
+	push	hl
+	ld	hl,(_pc)
+	inc	hl
+	ld	(_pc),hl
+	dec	hl
+	pop	de
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	add	hl,de
+	call	l_pint_pop
+	ld	hl,3	;const
+	add	hl,sp
+	push	hl
+	ld	hl,12	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	l,#(12 % 256)
+	call	l_asr
+	ld	de,15	;const
+	ex	de,hl
+	call	l_and
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,2	;const
+	add	hl,sp
+	push	hl
+	ld	hl,12	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	l,#(8 % 256)
+	call	l_asr
+	ld	de,15	;const
+	ex	de,hl
+	call	l_and
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,1	;const
+	add	hl,sp
+	push	hl
+	ld	hl,12	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	l,#(4 % 256)
+	call	l_asr
+	ld	de,15	;const
+	ex	de,hl
+	call	l_and
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,0	;const
+	add	hl,sp
+	ex	de,hl
+	ld	hl,12-2	;const
+	add	hl,sp
+	call	l_gint	;
+	ld	a,l
+	ld	(de),a
+	ld	hl,3	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+.i_156
+	ld	a,l
+	cp	#(2% 256)
+	jp	z,i_157
+	cp	#(1% 256)
+	jp	z,i_158
+	cp	#(3% 256)
+	jp	z,i_159
+	cp	#(4% 256)
+	jp	z,i_161
+	cp	#(5% 256)
+	jp	z,i_163
+	cp	#(6% 256)
+	jp	z,i_165
+	cp	#(7% 256)
+	jp	z,i_166
+	cp	#(9% 256)
+	jp	z,i_167
+	cp	#(10% 256)
+	jp	z,i_169
+	cp	#(11% 256)
+	jp	z,i_170
+	cp	#(12% 256)
+	jp	z,i_171
+	cp	#(13% 256)
+	jp	z,i_172
+	cp	#(0% 256)
+	jp	z,i_173
+	cp	#(8% 256)
+	jp	z,i_179
+	cp	#(14% 256)
+	jp	z,i_198
+	cp	#(15% 256)
+	jp	z,i_206
+	jp	i_155
+.i_157
+	ld	hl,_stack
+	push	hl
+	ld	hl,(_sp)
+	ld	h,0
+	add	hl,hl
+	pop	de
+	add	hl,de
+	ex	de,hl
+	ld	hl,(_pc)
+	call	l_pint
+	ld	hl,_sp
+	inc	(hl)
+	ld	a,(hl)
+	and	#(15 % 256)
+	ld	l,a
+	ld	h,0
+	ld	h,0
+	ld	a,l
+	ld	(_sp),a
+	ld	hl,10	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,4095	;const
+	call	l_and
+	ld	(_pc),hl
+	jp	i_155
+.i_158
+	ld	hl,10	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,4095	;const
+	call	l_and
+	ld	(_pc),hl
+	jp	i_155
+.i_159
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,2-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_eq
+	jp	nc,i_160
+	ld	hl,(_pc)
+	inc	hl
+	inc	hl
+	ld	(_pc),hl
+.i_160
+	jp	i_155
+.i_161
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,2-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_ne
+	jp	nc,i_162
+	ld	hl,(_pc)
+	inc	hl
+	inc	hl
+	ld	(_pc),hl
+.i_162
+	jp	i_155
+.i_163
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,5-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_eq
+	jp	nc,i_164
+	ld	hl,(_pc)
+	inc	hl
+	inc	hl
+	ld	(_pc),hl
+.i_164
+	jp	i_155
+.i_165
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	hl,2	;const
+	add	hl,sp
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	l,a
+	ld	h,0
+	jp	i_155
+.i_166
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_155
+.i_167
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,5-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_ne
+	jp	nc,i_168
+	ld	hl,(_pc)
+	inc	hl
+	inc	hl
+	ld	(_pc),hl
+.i_168
+	jp	i_155
+.i_169
+	ld	hl,10	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,4095	;const
+	call	l_and
+	ld	(_i),hl
+	jp	i_155
+.i_170
+	ld	hl,10	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,4095	;const
+	call	l_and
+	ex	de,hl
+	ld	hl,(_reg)
+	ld	h,0
+	add	hl,de
+	ld	(_pc),hl
+	jp	i_155
+.i_171
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	call	rand
+	ex	de,hl
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	call	l_and
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_155
+.i_172
+	ld	hl,_reg+15
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	hl,16	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,15	;const
+	call	l_and
+	ld	h,0
+	push	hl
+	call	_drawsprite
+	pop	bc
+	pop	bc
+	pop	bc
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_155
+.i_173
+	ld	hl,0	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+.i_176
+	ld	a,l
+	cp	#(224% 256)
+	jp	z,i_177
+	cp	#(238% 256)
+	jp	z,i_178
+	jp	i_175
+.i_177
+	call	_cls
+	jp	i_175
+.i_178
+	ld	hl,_sp
+	dec	(hl)
+	ld	a,(hl)
+	and	#(15 % 256)
+	ld	l,a
+	ld	h,0
+	ld	h,0
+	ld	a,l
+	ld	(_sp),a
+	ld	hl,_stack
+	push	hl
+	ld	hl,(_sp)
+	ld	h,0
+	add	hl,hl
+	pop	de
+	add	hl,de
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,4095	;const
+	call	l_and
+	ld	(_pc),hl
+.i_175
+	jp	i_155
+.i_179
+	ld	hl,8	;const
+	add	hl,sp
+	push	hl
+	ld	hl,12	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,15	;const
+	call	l_and
+	call	l_pint_pop
+	ld	hl,8	;const
+	add	hl,sp
+	call	l_gint	;
+.i_182
+	call	l_case
+	defw	i_183,0
+	defw	i_184,1
+	defw	i_185,2
+	defw	i_186,3
+	defw	i_187,4
+	defw	i_190,5
+	defw	i_193,6
+	defw	i_194,7
+	defw	i_197,14
+	defw	0
+	jp	i_181
+.i_183
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,5-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	l,a
+	ld	h,0
+	jp	i_181
+.i_184
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_or
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_185
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_and
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_186
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_xor
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_187
+	ld	hl,4	;const
+	add	hl,sp
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	add	hl,de
+	call	l_pint_pop
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ex	de,hl
+	ld	hl,6-2	;const
+	add	hl,sp
+	call	l_gint	;
+	ld	a,l
+	ld	(de),a
+	ld	hl,_reg+15
+	push	hl
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	hl,3840	;const
+	call	l_and
+	ld	de,0	;const
+	ex	de,hl
+	call	l_ne
+	jp	nc,i_188
+	ld	hl,1	;const
+	jp	i_189
+.i_188
+	ld	hl,0	;const
+.i_189
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_190
+	ld	hl,4	;const
+	add	hl,sp
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,7-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	ex	de,hl
+	and	a
+	sbc	hl,de
+	call	l_pint_pop
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ex	de,hl
+	ld	hl,6-2	;const
+	add	hl,sp
+	call	l_gint	;
+	ld	a,l
+	ld	(de),a
+	ld	hl,_reg+15
+	push	hl
+	ld	hl,6+1	;const
+	add	hl,sp
+	ld	a,(hl)
+	rlca
+	jp	nc,i_191
+	ld	hl,0	;const
+	jp	i_192
+.i_191
+	ld	hl,1	;const
+.i_192
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_193
+	ld	hl,_reg+15
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	a,(hl)
+	and	#(1 % 256)
+	pop	de
+	ld	(de),a
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	l,#(1 % 256)
+	call	l_asr_u
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_194
+	ld	hl,4	;const
+	add	hl,sp
+	push	hl
+	ld	de,_reg
+	ld	hl,5-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	ld	de,_reg
+	ld	hl,8-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	ex	de,hl
+	and	a
+	sbc	hl,de
+	call	l_pint_pop
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ex	de,hl
+	ld	hl,6-2	;const
+	add	hl,sp
+	call	l_gint	;
+	ld	a,l
+	ld	(de),a
+	ld	hl,_reg+15
+	push	hl
+	ld	hl,6+1	;const
+	add	hl,sp
+	ld	a,(hl)
+	rlca
+	jp	nc,i_195
+	ld	hl,0	;const
+	jp	i_196
+.i_195
+	ld	hl,1	;const
+.i_196
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_181
+.i_197
+	ld	hl,_reg+15
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	a,(hl)
+	and	#(128 % 256)
+	ld	e,a
+	ld	d,0
+	ld	l,#(8 % 256)
+	call	l_asr_u
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	l,#(1 % 256)
+	call	l_asl
+	pop	de
+	ld	a,l
+	ld	(de),a
+.i_181
+	jp	i_155
+.i_198
+	ld	hl,0	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+.i_201
+	ld	a,l
+	cp	#(158% 256)
+	jp	z,i_202
+	cp	#(161% 256)
+	jp	z,i_204
+	jp	i_200
+.i_202
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	call	_iskeypressed
+	pop	bc
+	ld	a,h
+	or	l
+	jp	z,i_203
+	ld	hl,(_pc)
+	inc	hl
+	inc	hl
+	ld	(_pc),hl
+.i_203
+	jp	i_200
+.i_204
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	push	hl
+	call	_iskeypressed
+	pop	bc
+	call	l_lneg
+	jp	nc,i_205
+	ld	hl,(_pc)
+	inc	hl
+	inc	hl
+	ld	(_pc),hl
+.i_205
+.i_200
+	jp	i_155
+.i_206
+	ld	hl,0	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+.i_209
+	ld	a,l
+	cp	#(7% 256)
+	jp	z,i_210
+	cp	#(10% 256)
+	jp	z,i_211
+	cp	#(21% 256)
+	jp	z,i_212
+	cp	#(24% 256)
+	jp	z,i_213
+	cp	#(30% 256)
+	jp	z,i_214
+	cp	#(41% 256)
+	jp	z,i_215
+	cp	#(51% 256)
+	jp	z,i_216
+	cp	#(85% 256)
+	jp	z,i_217
+	cp	#(101% 256)
+	jp	z,i_221
+	jp	i_208
+.i_210
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	ld	hl,_dtimer
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	l,a
+	ld	h,0
+	jp	i_208
+.i_211
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	push	hl
+	call	_waitanykey
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_208
+.i_212
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	ld	a,l
+	ld	(_dtimer),a
+	jp	i_208
+.i_213
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	ld	a,l
+	ld	(_stimer),a
+	jp	i_208
+.i_214
+	ld	hl,(_i)
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	add	hl,de
+	ld	(_i),hl
+	jp	i_208
+.i_215
+	ld	de,_reg
+	ld	hl,4-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	l,(hl)
+	ld	h,0
+	ld	b,h
+	ld	c,l
+	add	hl,hl
+	add	hl,hl
+	add	hl,bc
+	ld	de,56
+	add	hl,de
+	ld	(_i),hl
+	jp	i_208
+.i_216
+	ld	de,_mem
+	ld	hl,(_i)
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,100	;const
+	call	l_div_u
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,_mem
+	push	hl
+	ld	hl,(_i)
+	inc	hl
+	pop	de
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,10	;const
+	call	l_div_u
+	ld	de,10	;const
+	ex	de,hl
+	call	l_div_u
+	ex	de,hl
+	pop	de
+	ld	a,l
+	ld	(de),a
+	ld	hl,_mem
+	push	hl
+	ld	hl,(_i)
+	inc	hl
+	inc	hl
+	pop	de
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,6-2	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	add	hl,de
+	ld	e,(hl)
+	ld	d,0
+	ld	hl,10	;const
+	call	l_div_u
+	ex	de,hl
+	pop	de
+	ld	a,l
+	ld	(de),a
+	jp	i_208
+.i_217
+	ld	hl,6	;const
+	add	hl,sp
+	ld	de,0	;const
+	ex	de,hl
+	call	l_pint
+	jp	i_220
+.i_218
+	ld	hl,_mem
+	push	hl
+	ld	hl,(_i)
+	inc	hl
+	ld	(_i),hl
+	dec	hl
+	pop	de
+	add	hl,de
+	push	hl
+	ld	de,_reg
+	ld	hl,10-2	;const
+	add	hl,sp
+	call	l_gint	;
+	add	hl,de
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	hl,6	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	inc	hl
+	call	l_pint_pop
+	dec	hl
+.i_220
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	push	de
+	ld	hl,4	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_le
+	jp	c,i_218
+.i_219
+	jp	i_208
+.i_221
+	ld	hl,6	;const
+	add	hl,sp
+	ld	de,0	;const
+	ex	de,hl
+	call	l_pint
+	jp	i_224
+.i_222
+	ld	de,_reg
+	ld	hl,8-2	;const
+	add	hl,sp
+	call	l_gint	;
+	add	hl,de
+	push	hl
+	ld	hl,_mem
+	push	hl
+	ld	hl,(_i)
+	inc	hl
+	ld	(_i),hl
+	dec	hl
+	pop	de
+	add	hl,de
+	ld	a,(hl)
+	pop	de
+	ld	(de),a
+	ld	hl,6	;const
+	add	hl,sp
+	push	hl
+	call	l_gint	;
+	inc	hl
+	call	l_pint_pop
+	dec	hl
+.i_224
+	ld	hl,6	;const
+	add	hl,sp
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	push	de
+	ld	hl,4	;const
+	add	hl,sp
+	ld	l,(hl)
+	ld	h,0
+	pop	de
+	call	l_le
+	jp	c,i_222
+.i_223
+.i_208
+.i_155
+	ld	hl,12	;const
+	add	hl,sp
+	ld	sp,hl
+	ld	hl,0	;const
+	ret
+
+
+.i_1
+	defm	""&12&""&1&" ZX Chip8 V0.1 "&1&"@"&13&"(C) 2005 A"
+	defm	"lvaro Alea Fernandez"&13&"Distribui"
+	defm	"do con licencia GPL V2"&13&""&13&""&0
+	defm	""&1&" Menu Principal:"&1&"@"&13&""&13&""&0
+	defm	"Pulsa 1 para cargar una Rom"&13&""&0
+	defm	"Pulsa 2 para hacer un Reset"&13&""&0
+	defm	"Pulsa 3 para entrar en el Edit"
+	defm	"or interno"&13&""&0
+	defm	"Pulsa 4 para redefinir el Tecl"
+	defm	"ado"&13&""&0
+	defm	""&13&"Pulsa 0 para continuar a la E"
+	defm	"mulacion."&13&""&0
+	defm	""&13&"Cargando Rom..."&13&""&0
+
+
+; --- Start of Static Variables ---
+
+._i	defs	2
+._r	defs	1
+._mem	defs	4096
+._reg	defs	16
+._pc	defs	2
+._sp	defs	1
+._stack	defs	32
+._display	defs	2048
+._stimer	defs	1
+._dtimer	defs	1
+
+
+; --- Start of Scope Defns ---
+
+	LIB	malloc
+	LIB	vfprintf_mini
+	LIB	getlarge
+	LIB	unplot
+	LIB	feof
+	XDEF	_redefineteclas
+	XDEF	_initsystem
+	LIB	fill
+	LIB	labs
+	LIB	bit_play
+	LIB	atoi
+	LIB	getk
+	XDEF	_drawsprite
+	LIB	atol
+	LIB	isprint
+	XDEF	_printstate
+	LIB	free
+	LIB	vfprintf_fp
+	LIB	draw
+	LIB	lscroll
+	LIB	bit_open
+	XDEF	_main
+	LIB	sprintf
+	LIB	tolower
+	XDEF	_waitanykey
+	LIB	ispunct
+	XDEF	_updatedisplay
+	XDEF	_debug
+	LIB	realloc_down
+	LIB	strtol
+	LIB	read
+	XDEF	_menu
+	LIB	exit
+	LIB	rand
+	LIB	itoa
+	XDEF	_i
+	LIB	isupper
+	XDEF	_pita
+	LIB	open
+	XDEF	_r
+	LIB	fgetc
+	XDEF	_mygetkey
+	LIB	freopen
+	LIB	plot
+	LIB	fgets
+	LIB	open_z88
+	LIB	fopen_z88
+	LIB	creat
+	XREF	_system
+	LIB	close
+	XDEF	_iskeypressed
+	LIB	drawb
+	LIB	heapinit
+	XDEF	_updatedisplay2
+	LIB	fread
+	LIB	isxdigit
+	LIB	toupper
+	LIB	puts
+	LIB	fwrite
+	LIB	drawr
+	LIB	getwd
+	LIB	abs
+	LIB	calloc
+	LIB	fseek
+	LIB	ltoa_any
+	LIB	rename
+	LIB	clg
+	LIB	tape_load_block
+	LIB	fopen
+	LIB	fchkstd
+	XDEF	_mygetk2
+	XDEF	_cls
+	LIB	ftell
+	LIB	readbyte
+	XDEF	_mem
+	LIB	fprintf
+	LIB	vsscanf
+	XDEF	_key
+	XREF	__sgoioblk
+	LIB	fgetc_cons
+	LIB	fgets_cons
+	XDEF	_reg
+	LIB	mkdir
+	LIB	fputc
+	LIB	isalpha
+	LIB	remove
+	LIB	isdigit
+	LIB	scanf
+	LIB	fputs
+	LIB	isascii
+	LIB	strtoul
+	LIB	isalnum
+	LIB	lseek
+	XDEF	_loadrom
+	LIB	vsprintf
+	LIB	bit_fx
+	XDEF	_pc
+	XDEF	_do_cpu
+	LIB	circle
+	LIB	uncircle
+	LIB	vfscanf
+	XREF	_optarg
+	LIB	nropen
+	LIB	writebyte
+	XREF	_optreset
+	LIB	toascii
+	XDEF	_reset
+	XDEF	_mygetk
+	XDEF	_sp
+	LIB	fclose
+	LIB	rmdir
+	LIB	sleep
+	LIB	iscntrl
+	LIB	fgetpos
+	XREF	_optind
+	XREF	_opterr
+	LIB	point
+	LIB	printf
+	LIB	sscanf
+	LIB	fdopen
+	LIB	printk
+	LIB	printn
+	LIB	fdtell
+	LIB	tape_save
+	LIB	closeall
+	LIB	xorplot
+	LIB	srand
+	XDEF	_stack
+	LIB	freopen_z88
+	XDEF	_border
+	LIB	tape_save_block
+	LIB	xorborder
+	LIB	bit_beep
+	XREF	_optopt
+	LIB	ungetc
+	LIB	closegfx
+	LIB	getarg
+	LIB	rscroll
+	LIB	undraw
+	LIB	undrawb
+	LIB	atexit
+	LIB	getcwd
+	LIB	undrawr
+	XDEF	_display
+	LIB	csleep
+	LIB	window
+	LIB	bit_click
+	LIB	getfree
+	LIB	vfprintf_comp
+	LIB	fscanf
+	LIB	bit_frequency
+	XDEF	_stimer
+	LIB	fabandon
+	LIB	getopt
+	LIB	fdgetpos
+	XREF	_vfprintf
+	LIB	islower
+	LIB	write
+	LIB	fputc_cons
+	LIB	puts_cons
+	LIB	clga
+	XDEF	_dtimer
+	LIB	bit_close
+	LIB	isspace
+
+
+; --- End of Scope Defns ---
+
+
+; --- End of Compilation ---

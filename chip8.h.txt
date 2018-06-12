@@ -1,0 +1,27 @@
+/* Emulador de Chip-8 para ZX Spectrum    *
+ * Desarrollado por Alvaro Alea Fernandez *
+ * Distribuido con licencia GPL V2        */
+
+#ifndef __CHIP8_H
+#define __CHIP8_H
+
+//typedef unsigned char u8_t;
+
+extern unsigned char mem[0x1000];
+extern unsigned char reg[0x10];   
+extern int  stack[0x10];  
+extern unsigned char sp,stimer,dtimer; 
+extern int  pc,i;
+extern unsigned char display[64*32];
+extern unsigned char key[17];
+extern unsigned char debug;
+
+#define FONT_OFFSET 0x38
+
+void cls(void);
+int do_cpu(void);
+void chip8_reset(void);
+unsigned char drawsprite(unsigned char x, unsigned char y, unsigned char size);
+//void decode(unsigned short);
+
+#endif //ifndef __CHIP8_H
